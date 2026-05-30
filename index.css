@@ -1,0 +1,308 @@
+/* --- RESET & BASE STYLES --- */
+
+@font-face {
+  font-family: 'neuebit';
+  src: url('assets') format('ttf'),
+       url('assets/neuebit.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'BCSans';
+  src: url('assets') format('ttf'),
+       url('assets/2023_01_01_BCSans-Regular_2f.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+ 
+
+@font-face {
+  font-family: 'NeueMontreal-Regular';
+  src: url('assets') format('ttf'),
+       url('assets/NeueMontreal-Regular.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.grid-container {
+  display: grid;
+  
+  /* 1. Outer Gutters: Fixed 3.125rem (50px) on left and right */
+  /* 2. Content: 12 equal fluid columns that split the remaining space */
+  grid-template-columns: 
+    [outer-start] 3.125rem 
+    [content-start] repeat(12, minmax(0, 1fr)) [content-end] 
+    3.125rem [outer-end];
+  
+  /* Optional: Column gaps between the 12 columns (e.g., 24px) */
+  gap: 0 1.5rem; 
+  
+  /* Optional: Prevents the layout from stretching infinitely on massive screens */
+  max-width: 1440px;
+  margin-inline: auto;
+}
+
+.centered-feature-box {
+  /* Line 1 is content-start. Line 3 is the start of the 3rd column */
+  grid-column: 3 / 10; 
+}
+
+h1 {
+    font-family: Neuebit;
+    font-size: 2rem;
+    line-height: 1.75rem;
+}
+
+:root {
+    --bg-color: #ffffff;
+    --text-main: #000000;
+    --text-muted: #666666;
+    --text-disabled: #8e8e93;
+    --media-bg: #f5f5f5;
+    --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --header-height: 80px;
+}
+
+body {
+    font-family: var(--font-stack);
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Prevent scrolling when full screen menu is active */
+body.menu-open {
+    overflow: hidden;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* --- STICKY HEADER --- */
+.site-header {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+    padding: 3.125rem;
+    z-index: 1000; /* Stays structural above content */
+}
+
+.site-header .subtitle {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+
+.desktop-nav a {
+    margin-left: 2rem;
+    font-size: 0.95rem;
+}
+
+/* --- INTERACTIVE MENU TOGGLE --- */
+.menu-toggle {
+    display: none; /* Hidden on desktop */
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 14px;
+    padding: 0;
+    z-index: 1100; /* Always sits atop the overlay */
+}
+
+.hamburger-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-main);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* Transformation animations to form the 'X' */
+.menu-toggle.is-active .hamburger-line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.menu-toggle.is-active .hamburger-line:nth-child(2) {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
+/* --- FULL SCREEN MOBILE OVERLAY --- */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-menu-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.mobile-nav-links a {
+    font-size: 4.25rem;
+    font-family: Neuebit;
+    /* font-weight: 500; */
+    /* letter-spacing: -0.02em; */
+    color: var(--text-disabled);
+    transition: color 0.2s ease;
+}
+
+.mobile-nav-links a.active, 
+.mobile-nav-links a:max-content {
+    color: var(--text-main);
+}
+
+/* --- MAIN CONTENT LAYOUT --- */
+.container {
+    /* max-width: 1100px; */
+    margin: 3.125rem;
+}
+
+.hero-section {
+    margin: 10rem 0 10rem 0;
+    width: 75%;
+}
+
+.hero-section h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.hero-section .bio {
+    font-size: 2rem;
+    margin-top: 1rem;
+}
+
+/* --- PORTFOLIO FEED (Mobile First Stacked Order) --- */
+.work-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    margin-bottom: 6rem;
+}
+
+.project-item {
+    display: flex;
+    flex-direction: column; /* Media on top, copy underneath */
+    gap: 1.5rem;
+}
+
+.project-media {
+    background-color: var(--media-bg);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.project-media img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.project-info h3 {
+    font-size: 2rem;
+    line-height: 1.75rem;
+    font-family: Neuebit;
+    /* font-weight: 600;
+    margin-bottom: 0.25rem; */
+}
+
+.project-year {
+    display: block;
+    font-size: 0.85rem;
+    font-family: BCSans;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+}
+
+.project-info p {
+    font-family: BCSans;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+}
+
+.project-info p:last-child {
+    margin-bottom: 0;
+}
+
+/* --- FOOTER --- */
+.site-footer {
+    padding: 2.5rem 2rem;
+    border-top: 1px solid #f0f0f0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* --- MEDIA QUERIES (Desktop Layout Switch) --- */
+@media (min-width: 769px) {
+    .project-item {
+        display: grid;
+        grid-template-columns: 0.5fr 1fr;
+        gap: 4rem;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-center, .desktop-nav {
+        display: none; /* Clear secondary space parameters */
+    }
+
+    .menu-toggle {
+        display: flex; /* Expose the interactive menu trigger toggle */
+    }
+
+    .container {
+        margin: 1rem;
+    }
+
+    .site-header {
+        padding: 1rem;
+        position: sticky;
+    }
+}
