@@ -1,66 +1,4 @@
-/* --- RESET & BASE STYLES --- */
-
-@font-face {
-  font-family: 'neuebit';
-  src: url('assets') format('ttf'),
-       url('assets/neuebit.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'BCSans';
-  src: url('assets') format('ttf'),
-       url('assets/2023_01_01_BCSans-Regular_2f.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
- 
-
-@font-face {
-  font-family: 'NeueMontreal-Regular';
-  src: url('assets') format('ttf'),
-       url('assets/NeueMontreal-Regular.otf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.grid-container {
-  display: grid;
-  
-  /* 1. Outer Gutters: Fixed 3.125rem (50px) on left and right */
-  /* 2. Content: 12 equal fluid columns that split the remaining space */
-  grid-template-columns: 
-    [outer-start] 3.125rem 
-    [content-start] repeat(12, minmax(0, 1fr)) [content-end] 
-    3.125rem [outer-end];
-  
-  /* Optional: Column gaps between the 12 columns (e.g., 24px) */
-  gap: 0 1.5rem; 
-  
-  /* Optional: Prevents the layout from stretching infinitely on massive screens */
-  max-width: 1440px;
-  margin-inline: auto;
-}
-
-.centered-feature-box {
-  /* Line 1 is content-start. Line 3 is the start of the 3rd column */
-  grid-column: 3 / 10; 
-}
-
-h1 {
-    font-family: Neuebit;
-    font-size: 2rem;
-    line-height: 1.75rem;
-}
-
+/* --- 0. ROOT VARIABLES & BREAKPOINTS --- */
 :root {
     --bg-color: #ffffff;
     --text-main: #000000;
@@ -69,6 +7,55 @@ h1 {
     --media-bg: #f5f5f5;
     --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --header-height: 80px;
+
+    /* Responsive Design System Layout Controls */
+    --site-padding: 1rem;
+    --container-margin: 1rem;
+    --hero-width: 85%;
+    --grid-gutters: 1rem;
+    --work-grid-gap: 4rem;
+    --spacer-layout-gap: 1.5rem;
+
+    /* Typographic Hierarchy Controls */
+    --font-neuebit: 'neuebit', sans-serif;
+    --h1-font-size: 2rem;
+    --h1-line-height: 1.75rem;
+    --h2-font-size: 1.5rem;
+    --h2-line-height: 1.25rem;
+    --description-font-size: 1rem;
+    --description-line-height: 1.4;
+    --hero-margin: 6rem 0 6rem 0;
+}
+
+
+/* --- FONTS --- */
+@font-face {
+  font-family: 'neuebit';
+  src: url('assets/neuebit.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'BCSans';
+  src: url('assets/2023_01_01_BCSans-Regular_2f.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NeueMontreal';
+  src: url('assets/NeueMontreal-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+/* --- RESET & BASE STYLES --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -79,7 +66,6 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Prevent scrolling when full screen menu is active */
 body.menu-open {
     overflow: hidden;
 }
@@ -89,36 +75,71 @@ a {
     text-decoration: none;
 }
 
-/* --- STICKY HEADER --- */
+h1 {
+    font-family: 'neuebit', sans-serif;
+    font-size: var(--h1-font-size);       
+    line-height: var(--h1-line-height); 
+}
+
+
+/* --- GLOBAL LAYOUT CONTAINERS --- */
+.container {
+    margin: var(--container-margin);
+    transition: margin 0.2s ease;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 
+      [outer-start] var(--grid-gutters) 
+      [content-start] repeat(12, minmax(0, 1fr)) [content-end] 
+      var(--grid-gutters) [outer-end];
+    gap: 0 1.5rem; 
+    max-width: 1920px;
+    margin-inline: auto;
+    transition: grid-template-columns 0.2s ease;
+}
+
+.centered-feature-box {
+    grid-column: 3 / 10; 
+}
+
+
+/* --- STICKY NAVIGATION HEADER --- */
 .site-header {
+    position: sticky;
     top: 0;
     left: 0;
     width: 100%;
-    height: auto;
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000; 
     display: flex;
     justify-content: space-between;
-    /* align-items: center; */
-    padding: 3.125rem;
-    z-index: 1000; /* Stays structural above content */
+    align-items: flex-start; /* Forces all three title/nav items straight to the top edge line */
+    padding: var(--site-padding);
+    border-bottom: 1px solid var(--text-main);
+    transition: padding 0.2s ease;
 }
 
 .site-header .subtitle {
-    font-size: 0.9rem;
+    font-size: var(--h1-font-size);
     color: var(--text-muted);
 }
 
 
-.desktop-nav a {
-    margin-left: 2rem;
-    font-size: 0.95rem;
+/* --- NAVIGATION CONTAINER BLOCKS --- */
+.desktop-nav {
+    display: none; 
 }
 
-/* --- INTERACTIVE MENU TOGGLE --- */
+.desktop-nav a {
+    margin-left: 2rem;
+    font-size: var(--h1-font-size);
+    font-family: var(--font-neuebit);
+    line-height: 1; /* Strips hidden dynamic line-box metrics to row baseline alignment */
+}
+
 .menu-toggle {
-    display: none; /* Hidden on desktop */
+    display: flex; 
     background: none;
     border: none;
     cursor: pointer;
@@ -127,7 +148,7 @@ a {
     width: 24px;
     height: 14px;
     padding: 0;
-    z-index: 1100; /* Always sits atop the overlay */
+    z-index: 1100;
 }
 
 .hamburger-line {
@@ -138,7 +159,6 @@ a {
     transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
-/* Transformation animations to form the 'X' */
 .menu-toggle.is-active .hamburger-line:nth-child(1) {
     transform: translateY(6px) rotate(45deg);
 }
@@ -147,7 +167,8 @@ a {
     transform: translateY(-6px) rotate(-45deg);
 }
 
-/* --- FULL SCREEN MOBILE OVERLAY --- */
+
+/* --- MOBILE EXPAND OVERLAY --- */
 .mobile-menu-overlay {
     position: fixed;
     top: 0;
@@ -158,7 +179,7 @@ a {
     z-index: 1;
     display: flex;
     align-items: flex-start;
-    padding: 1rem;
+    padding: 2rem 1rem;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -172,34 +193,33 @@ a {
 .mobile-nav-links {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem; 
     position: absolute;
-    bottom: 0;
-    width: 100%;
+    bottom: 4rem;
+    left: var(--site-padding);
+    width: calc(100% - (var(--site-padding) * 2));
 }
 
 .mobile-nav-links a {
     font-size: 4.25rem;
-    font-family: Neuebit;
-    /* font-weight: 500; */
-    /* letter-spacing: -0.02em; */
+    font-family: var(--font-neuebit);
     color: var(--text-disabled);
     transition: color 0.2s ease;
+    line-height: 1; 
 }
 
 .mobile-nav-links a.active, 
-.mobile-nav-links a:max-content {
+.mobile-nav-links a:hover {
     color: var(--text-main);
 }
 
-/* --- MAIN CONTENT LAYOUT --- */
-.container {
-    /* max-width: 1100px; */
-    margin: 3.125rem;
-}
 
+/* --- HERO TEXT RUNWAY --- */
 .hero-section {
-    margin: 10rem 0 10rem 0;
-    width: 75%;
+    margin: var(--hero-margin);
+    width: var(--hero-width);
+    transition: width 0.2s ease, margin 0.2s ease;
 }
 
 .hero-section h2 {
@@ -209,26 +229,35 @@ a {
 }
 
 .hero-section .bio {
-    font-size: 2rem;
+    font-size: var(--h1-font-size);
     margin-top: 1rem;
 }
 
-/* --- PORTFOLIO FEED (Mobile First Stacked Order) --- */
+
+/* --- PORTFOLIO SYSTEM LAYOUTS --- */
 .work-grid {
     display: flex;
     flex-direction: column;
-    gap: 5rem;
+    gap: var(--work-grid-gap);
     margin-bottom: 6rem;
+    transition: gap 0.2s ease;
+}
+
+.spacer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-layout-gap);
 }
 
 .project-item {
     display: flex;
-    flex-direction: column; /* Media on top, copy underneath */
+    flex-direction: column; 
     gap: 1.5rem;
 }
 
 .project-media {
     background-color: var(--media-bg);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     width: 100%;
     display: flex;
     justify-content: center;
@@ -237,32 +266,30 @@ a {
 }
 
 .project-media img {
-    max-width: 100%;
+    max-width: 75%;
     height: auto;
     object-fit: contain;
 }
 
 .project-info h3 {
-    font-size: 2rem;
-    line-height: 1.75rem;
-    font-family: Neuebit;
-    /* font-weight: 600;
-    margin-bottom: 0.25rem; */
+    font-size: var(--h2-font-size);
+    line-height: var(--h2-line-height);
+    font-family: 'neuebit', sans-serif;
 }
 
 .project-year {
     display: block;
     font-size: 0.85rem;
-    font-family: BCSans;
+    font-family: 'BCSans', sans-serif;
     color: var(--text-muted);
     margin-bottom: 1.25rem;
 }
 
 .project-info p {
-    font-family: BCSans;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--text-main);
+    font-family: 'NeueMontreal', sans-serif;
+    font-size: var(--description-font-size);
+    line-height: var(--description-line-height);
+    color: #878787;
     margin-bottom: 1rem;
 }
 
@@ -270,39 +297,221 @@ a {
     margin-bottom: 0;
 }
 
-/* --- FOOTER --- */
+
+/* --- FOOTER STRUCTURE --- */
 .site-footer {
-    padding: 2.5rem 2rem;
-    border-top: 1px solid #f0f0f0;
+    padding: 2.5rem var(--site-padding);
+    border-top: 1px solid var(--text-main);
     font-size: 0.85rem;
-    color: var(--text-muted);
+    color: var(--text-main);
+    transition: padding 0.2s ease;
 }
 
-/* --- MEDIA QUERIES (Desktop Layout Switch) --- */
-@media (min-width: 769px) {
-    .project-item {
+.footer-left {
+    font-family: 'neuebit', sans-serif;
+    font-size: var(--h1-font-size);
+    line-height: var(--h1-line-height);
+    color: var(--text-main);
+}
+
+
+/* ==========================================================================
+   PROGRESSIVE LAYOUT OVERRIDES (BREAKPOINTS)
+   ========================================================================== */
+
+/* 1. MOBILE BREAKPOINT SETTING */
+@media (max-width: 833px) {
+    :root {
+        --site-padding: 1rem;
+        --container-margin: 1rem;
+        --hero-width: 100%;
+        --grid-gutters: 1rem;
+        --work-grid-gap: 5rem;
+
+        --h1-font-size: 2rem;
+        --h1-line-height: 1.75rem;
+        --h2-font-size: 2rem;
+        --h2-line-height: 1.75rem;
+    }
+
+    .site-header {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        background-color: rgba(255, 255, 255);
+    }
+
+    .header-center {
+        display: none;
+    }
+}
+
+/* 2. STANDARD MONITOR BREAKPOINT SETTING (Tablets & Laptops) */
+@media (min-width: 768px) and (max-width: 1439px) {
+    :root {
+        --site-padding: 3.125rem;
+        --container-margin: 3.125rem;
+        --grid-gutters: 3.125rem;
+        --hero-width: 75%;
+        --work-grid-gap: 6rem;
+
+        --h1-font-size: 1.75rem;
+        --h1-line-height: 1.5rem;
+        --h2-font-size: 1.75rem;
+        --h2-line-height: 1.5rem;
+        --hero-margin: 20rem 0 15rem 0;
+    }
+
+    .desktop-nav {
+        display: flex; 
+        align-items: flex-start; /* Corrects navigation text line vertical tracking along the top edge */
+    }
+
+    .menu-toggle {
+        display: none; 
+    }
+
+    .site-header {
+        border-bottom: none; 
+        position: absolute;
+    }
+
+    /* Activates layout grid configuration on the parent .spacer container blocks */
+    .spacer {
         display: grid;
         grid-template-columns: 0.5fr 1fr;
         gap: 4rem;
         align-items: flex-start;
     }
+
+    /* Makes the .project-item wrapper completely pass-through */
+    .project-item {
+        display: contents; 
+        position: -webkit-sticky;
+        position: sticky;
+        top: calc(var(--header-height) + 1.5rem); /* Updated */
+        z-index: 10;
+        grid-column: 1;
+    }
+
+    /* Locks left column components cleanly to layout column 1 and enables sticky tracking */
+    .project-info {
+        position: -webkit-sticky;
+        position: sticky;
+        top: calc(var(--header-height) + 6rem); /* Leaves breathing room below clear header blur masks */
+        z-index: 10;
+        grid-column: 1;
+    }
+
+    /* Locks layout media nodes to the right column */
+    .project-media {
+        grid-column: 2;
+    }
 }
 
-@media (max-width: 768px) {
-    .header-center, .desktop-nav {
-        display: none; /* Clear secondary space parameters */
+/* 3. EXTRA LARGE DISPLAYS (Large Desktop Monitors) */
+@media (min-width: 1440px) and (max-width: 1919px) {
+    :root {
+        --site-padding: 7.125rem;
+        --container-margin: 7.125rem;
+        --grid-gutters: 7.125rem;
+        --hero-width: 85%;
+        --work-grid-gap: 8rem;
+
+        --h1-font-size: 2.75rem;
+        --h1-line-height: 2.5rem;
+        --h2-font-size: 2.75rem;
+        --h2-line-height: 2.5rem;
+        --hero-margin: 25rem 0 15rem 0;
+    }
+
+    .desktop-nav {
+        display: flex; 
+        align-items: flex-start;
     }
 
     .menu-toggle {
-        display: flex; /* Expose the interactive menu trigger toggle */
-    }
-
-    .container {
-        margin: 1rem;
+        display: none; 
     }
 
     .site-header {
-        padding: 1rem;
+        border-bottom: none; 
+        position: absolute;
+    }
+
+    .spacer {
+        display: grid;
+        grid-template-columns: 0.4fr 1fr;
+        gap: 6rem;
+        align-items: flex-start;
+    }
+
+    .project-item {
+        display: contents; 
+    }
+
+    .project-info {
+        position: -webkit-sticky;
         position: sticky;
+        top: calc(var(--header-height) + 1.5rem);
+        z-index: 10;
+        grid-column: 1;
+    }
+
+    .project-media {
+        grid-column: 2;
+    }
+}
+
+/* 4. ULTRA-WIDE MONITOR ADJUSTMENTS */
+@media (min-width: 1920px) {
+    :root {
+        --site-padding: 10rem;
+        --container-margin: 10rem;
+        --grid-gutters: 10rem;
+        --hero-width: 80%;
+        --work-grid-gap: 10rem;
+
+        --h1-font-size: 4rem;
+        --h1-line-height: 3.75rem;
+        --h2-font-size: 3rem;
+        --h2-line-height: 2.75rem;
+        --hero-margin: 30rem 0 25rem 0;
+    }
+
+    .desktop-nav {
+        display: flex; 
+        align-items: flex-start;
+    }
+
+    .menu-toggle {
+        display: none; 
+    }
+
+    .site-header {
+        border-bottom: none; 
+        position: absolute;
+    }
+
+    .spacer {
+        display: grid;
+        grid-template-columns: 0.4fr 1fr;
+        gap: 8rem;
+        align-items: flex-start;
+    }
+
+    .project-item {
+        display: contents; 
+    }
+
+    .project-info {
+        position: -webkit-sticky;
+        position: sticky;
+        top: calc(var(--header-height) + 6rem);
+        z-index: 10;
+        grid-column: 1;
+    }
+
+    .project-media {
+        grid-column: 2;
     }
 }
