@@ -1,6 +1,6 @@
 /* --- 0. ROOT VARIABLES & BREAKPOINTS --- */
 :root {
-    --bg-color: #f0f0f0;
+    --bg-color: #f9f9f9;
     --text-main: #000000;
     --text-muted: #666666;
     --text-disabled: #8e8e93;
@@ -15,38 +15,42 @@
     --grid-gutters: 1rem;
     --work-grid-gap: 4rem;
     --spacer-layout-gap: 1.5rem;
+    --hero-margin: 6rem 0 6rem 0;
 
     /* Typographic Hierarchy Controls */
     --font-neuebit: 'neuebit', sans-serif;
+    --font-bio: "NeueMontreal", sans-serif;
+    --font-year: "NeueMontreal", sans-serif;
+
     --h1-font-size: 2rem;
     --h1-line-height: 1.75rem;
     --h2-font-size: 1.5rem;
     --h2-line-height: 1.25rem;
     --description-font-size: 1rem;
-    --description-line-height: 1.4;
-    --hero-margin: 6rem 0 6rem 0;
+    --description-line-height: 1.4rem;
+    --project-year-font-size: 0.85rem;
 }
 
 /* --- FONTS --- */
 @font-face {
-  font-family: 'neuebit';
-  src: url('assets/neuebit.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'neuebit';
+    src: url('assets/neuebit.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'BCSans';
-  src: url('assets/2023_01_01_BCSans-Regular_2f.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'BCSans';
+    src: url('assets/2023_01_01_BCSans-Regular_2f.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'NeueMontreal';
-  src: url('assets/NeueMontreal-Regular.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'NeueMontreal';
+    src: url('assets/NeueMontreal-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 
@@ -57,13 +61,15 @@
     box-sizing: border-box;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     cursor: url('assets/Cursor.png') 0 0, auto !important;
 }
 
 body {
     cursor: url('assets/Cursor.png'), auto;
-    font-family: var(--font-stack); 
+    font-family: var(--font-stack);
     background-color: var(--bg-color);
     color: var(--text-main);
     line-height: 1.5;
@@ -81,8 +87,8 @@ a {
 
 h1 {
     font-family: 'neuebit', sans-serif;
-    font-size: var(--h1-font-size);       
-    line-height: var(--h1-line-height); 
+    font-size: var(--h1-font-size);
+    line-height: var(--h1-line-height);
 }
 
 
@@ -94,18 +100,16 @@ h1 {
 
 .grid-container {
     display: grid;
-    grid-template-columns: 
-      [outer-start] var(--grid-gutters) 
-      [content-start] repeat(12, minmax(0, 1fr)) [content-end] 
-      var(--grid-gutters) [outer-end];
-    gap: 0 1.5rem; 
+    grid-template-columns:
+        [outer-start] var(--grid-gutters) [content-start] repeat(12, minmax(0, 1fr)) [content-end] var(--grid-gutters) [outer-end];
+    gap: 0 1.5rem;
     max-width: 1920px;
     margin-inline: auto;
     transition: grid-template-columns 0.2s ease;
 }
 
 .centered-feature-box {
-    grid-column: 3 / 10; 
+    grid-column: 3 / 10;
 }
 
 
@@ -115,10 +119,11 @@ h1 {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000; 
+    z-index: 1000;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Forces all three title/nav items straight to the top edge line */
+    align-items: flex-start;
+    /* Forces all three title/nav items straight to the top edge line */
     padding: var(--site-padding);
     border-bottom: 1px solid var(--text-main);
     transition: padding 0.2s ease;
@@ -132,18 +137,20 @@ h1 {
 
 /* --- NAVIGATION CONTAINER BLOCKS --- */
 .desktop-nav {
-    display: none; 
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
 }
 
 .desktop-nav a {
     margin-left: 2rem;
     font-size: var(--h1-font-size);
     font-family: var(--font-neuebit);
-    line-height: 1; /* Strips hidden dynamic line-box metrics to row baseline alignment */
+    line-height: var(--h1-line-height);
 }
 
 .menu-toggle {
-    display: flex; 
+    display: flex;
     background: none;
     border: none;
     cursor: pointer;
@@ -198,7 +205,7 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 1.5rem; 
+    gap: 1.5rem;
     position: absolute;
     bottom: 4rem;
     left: var(--site-padding);
@@ -210,10 +217,10 @@ h1 {
     font-family: var(--font-neuebit);
     color: var(--text-disabled);
     transition: color 0.2s ease;
-    line-height: 1; 
+    line-height: 1;
 }
 
-.mobile-nav-links a.active, 
+.mobile-nav-links a.active,
 .mobile-nav-links a:hover {
     color: var(--text-main);
 }
@@ -234,7 +241,7 @@ h1 {
 
 .hero-section .bio {
     font-size: var(--h1-font-size);
-    margin-top: 1rem;
+    margin-top: 2rem;
 }
 
 
@@ -255,7 +262,7 @@ h1 {
 
 .project-item {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     gap: 1.5rem;
 }
 
@@ -283,14 +290,14 @@ h1 {
 
 .project-year {
     display: block;
-    font-size: 0.85rem;
-    font-family: 'BCSans', sans-serif;
-    color: var(--text-muted);
+    font-size: var(--project-year-font-size);
+    font-family: var(--font-year);
+    color: var(--text-main);
     margin-bottom: 1.25rem;
 }
 
 .project-info p {
-    font-family: 'NeueMontreal', sans-serif;
+    font-family: var(--font-bio);
     font-size: var(--description-font-size);
     line-height: var(--description-line-height);
     color: #878787;
@@ -349,10 +356,14 @@ h1 {
     .header-center {
         display: none;
     }
+
+    .header-right {
+        display: none;
+    }
 }
 
 /* 2. STANDARD MONITOR BREAKPOINT SETTING (Tablets & Laptops) */
-@media (min-width: 768px) and (max-width: 1439px) {
+@media (min-width: 834px) and (max-width: 1439px) {
     :root {
         --site-padding: 3.125rem;
         --container-margin: 3.125rem;
@@ -365,38 +376,34 @@ h1 {
         --h2-font-size: 1.75rem;
         --h2-line-height: 1.5rem;
         --hero-margin: 20rem 0 15rem 0;
-        --description-font-size: 1rem;
-        --description-line-height: 1rem;
-    }
-
-    .desktop-nav {
-        display: flex; 
-        align-items: flex-start; /* Corrects navigation text line vertical tracking along the top edge */
+        --description-font-size: 0.75rem;
+        --description-line-height: 0.75rem;
     }
 
     .menu-toggle {
-        display: none; 
+        display: none;
     }
 
     .site-header {
-        border-bottom: none; 
+        border-bottom: none;
         position: absolute;
     }
 
     /* Activates layout grid configuration on the parent .spacer container blocks */
     .spacer {
         display: grid;
-        grid-template-columns: 0.5fr 1fr;
+        grid-template-columns: 0.3fr .75fr;
         gap: 4rem;
         align-items: flex-start;
     }
 
     /* Makes the .project-item wrapper completely pass-through */
     .project-item {
-        display: contents; 
+        display: contents;
         position: -webkit-sticky;
         position: sticky;
-        top: calc(var(--header-height) + 1.5rem); /* Updated */
+        top: calc(var(--header-height) + 1.5rem);
+        /* Updated */
         z-index: 10;
         grid-column: 1;
     }
@@ -405,7 +412,8 @@ h1 {
     .project-info {
         position: -webkit-sticky;
         position: sticky;
-        top: calc(var(--header-height) + 6rem); /* Leaves breathing room below clear header blur masks */
+        top: calc(var(--header-height) + 6rem);
+        /* Leaves breathing room below clear header blur masks */
         z-index: 10;
         grid-column: 1;
     }
@@ -413,6 +421,10 @@ h1 {
     /* Locks layout media nodes to the right column */
     .project-media {
         grid-column: 2;
+    }
+
+    .site-footer {
+        padding: 2rem 3.125rem;
     }
 }
 
@@ -422,7 +434,7 @@ h1 {
         --site-padding: 7.125rem;
         --container-margin: 7.125rem;
         --grid-gutters: 7.125rem;
-        --hero-width: 85%;
+        --hero-width: 65%;
         --work-grid-gap: 8rem;
 
         --h1-font-size: 2.75rem;
@@ -432,31 +444,27 @@ h1 {
         --hero-margin: 25rem 0 15rem 0;
         --description-font-size: 1rem;
         --description-line-height: 1rem;
-    }
-
-    .desktop-nav {
-        display: flex; 
-        align-items: flex-start;
+        --project-year-font-size: 1.25rem;
     }
 
     .menu-toggle {
-        display: none; 
+        display: none;
     }
 
     .site-header {
-        border-bottom: none; 
+        border-bottom: none;
         position: absolute;
     }
 
     .spacer {
         display: grid;
-        grid-template-columns: 0.4fr 1fr;
+        grid-template-columns: 0.4fr 0.75fr;
         gap: 6rem;
         align-items: flex-start;
     }
 
     .project-item {
-        display: contents; 
+        display: contents;
     }
 
     .project-info {
@@ -472,50 +480,56 @@ h1 {
     }
 
     .site-footer {
-        padding: 3.125rem;
+        padding: 2.5rem 7.125rem;
+    }
 }
 
 /* 4. ULTRA-WIDE MONITOR ADJUSTMENTS */
 @media (min-width: 1920px) {
     :root {
-        --site-padding: 10rem;
-        --container-margin: 10rem;
+        --site-padding: 12.5rem;
+        --container-margin: 12.5rem;
         --grid-gutters: 10rem;
-        --hero-width: 80%;
-        --work-grid-gap: 10rem;
+        --hero-width: 65%;
+        --work-grid-gap: 20rem;
 
-        --h1-font-size: 4rem;
-        --h1-line-height: 3.75rem;
-        --h2-font-size: 3.5rem;
+        --h1-font-size: 3rem;
+        --h1-line-height: 2.75rem;
+        --h2-font-size: 2.5rem;
         --h2-line-height: 3rem;
-        --hero-margin: 30rem 0 25rem 0;
-        --description-font-size: 2rem;
-        --description-line-height: 2rem;
+        --hero-margin: 20rem 0 15rem 0;
+        --description-font-size: 1.5rem;
+        --description-line-height: 1.5rem;
+        --project-year-font-size: 1.75rem;
+
     }
 
-    .desktop-nav {
-        display: flex; 
-        align-items: flex-start;
+    .container {
+        margin-top: 45rem;
     }
 
     .menu-toggle {
-        display: none; 
+        display: none;
     }
 
     .site-header {
-        border-bottom: none; 
+        border-bottom: none;
         position: absolute;
+    }
+
+    .site-footer {
+        padding:3rem;
     }
 
     .spacer {
         display: grid;
-        grid-template-columns: 0.4fr 1fr;
-        gap: 8rem;
+        grid-template-columns: 0.35fr .75fr;
+        gap: 4rem;
         align-items: flex-start;
     }
 
     .project-item {
-        display: contents; 
+        display: contents;
     }
 
     .project-info {
@@ -529,5 +543,4 @@ h1 {
     .project-media {
         grid-column: 2;
     }
-}
 }
