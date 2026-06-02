@@ -503,16 +503,16 @@ h1 {
 /* 4. ULTRA-WIDE MONITOR ADJUSTMENTS */
 @media (min-width: 1920px) {
     :root {
-        --site-padding: 11rem;
-        --container-margin: 11rem;
+        --site-padding: 10rem;
+        --container-margin: 30rem;
         --grid-gutters: 10rem;
         --hero-width: 65%;
         --work-grid-gap: 20rem;
 
-        --h1-font-size: 3rem;
-        --h1-line-height: 2.75rem;
-        --h2-font-size: 2.5rem;
-        --h2-line-height: 3rem;
+        --h1-font-size: 2.5rem;
+        --h1-line-height: 2.25rem;
+        --h2-font-size: 2.25rem;
+        --h2-line-height: 2.25rem;
         --hero-margin: 20rem 0 15rem 0;
         --description-font-size: 1.25rem;
         --description-line-height: 1.25rem;
@@ -520,17 +520,18 @@ h1 {
 
     }
 
-    .container {
-        margin-top: 30rem;
-    }
-
     .menu-toggle {
         display: none;
     }
 
     .site-header {
+        padding-left: 30rem;
+        padding-right: 30rem;
         border-bottom: none;
         position: absolute;
+    }
+    .container {
+        margin-top:30rem;
     }
 
     .site-footer {
