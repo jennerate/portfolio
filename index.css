@@ -68,14 +68,8 @@
     box-sizing: border-box;
 }
 
-*,
-*::before,
-*::after {
-    cursor: url('assets/Cursor.png') 0 0, auto !important;
-}
 
 body {
-    cursor: url('assets/Cursor.png'), auto;
     font-family: var(--font-stack);
     background-color: var(--bg-color);
     color: var(--text-main);
@@ -295,6 +289,7 @@ h1 {
 
 .gif img {
     clip-path: inset(5px 5px 5px 5px);
+    background-color: var(--media-bg);
 }
 
 .illo img {
