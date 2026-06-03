@@ -26,3 +26,47 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const previewContainer = document.getElementById("hoverPreview");
+    if (!previewContainer) return;
+
+    const previewImg = previewContainer.querySelector("img");
+    const desktopLinks = document.querySelectorAll(".desktop-nav a");
+
+    const updatePreviewPosition = (e) => {
+        // FIXED: Uses Page coordinates instead of Client coordinates 
+        // This ensures if your header scrolls, the preview box stays perfectly locked to the true mouse tip
+        previewContainer.style.left = `${e.pageX}px`;
+        previewContainer.style.top = `${e.pageY}px`;
+    };
+
+    // MODERN FIX: Tracks your CSS breakpoint natively instead of relying on unreliable innerWidth values
+    const isDesktop = window.matchMedia("(min-width: 834px)");
+
+    if (isDesktop.matches) {
+        desktopLinks.forEach(link => {
+            const imageSource = link.getAttribute("data-preview");
+
+            if (!imageSource) return;
+
+            link.addEventListener("mouseenter", (e) => {
+                previewImg.src = imageSource;
+                
+                // FORCE RENDER: Explicitly forces the element to show up
+                previewContainer.style.display = "block";
+                previewContainer.classList.add("is-visible");
+                
+                updatePreviewPosition(e);
+            });
+
+            link.addEventListener("mousemove", (e) => {
+                updatePreviewPosition(e);
+            });
+
+            link.addEventListener("mouseleave", () => {
+                previewContainer.classList.remove("is-visible");
+            });
+        });
+    }
+});

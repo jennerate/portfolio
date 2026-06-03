@@ -186,7 +186,7 @@ h1 {
     top: 0;
     left: 0;
     width: 100vw;
-    height:100vh;
+    height: 100vh;
     height: 100dvh;
     padding-bottom: env(safe-area-inset-bottom);
     background-color: var(--bg-color);
@@ -453,10 +453,10 @@ h1 {
         --hero-width: 65%;
         --work-grid-gap: 8rem;
 
-        --h1-font-size: 2.75rem;
-        --h1-line-height: 2.5rem;
-        --h2-font-size: 2.75rem;
-        --h2-line-height: 2.5rem;
+        --h1-font-size: 2.25rem;
+        --h1-line-height: 2rem;
+        --h2-font-size: 2.25rem;
+        --h2-line-height: 2rem;
         --hero-margin: 25rem 0 15rem 0;
         --description-font-size: 1rem;
         --description-line-height: 1rem;
@@ -504,7 +504,7 @@ h1 {
 @media (min-width: 1920px) {
     :root {
         --site-padding: 10rem;
-        --container-margin: 30rem;
+        --container-margin: 35rem;
         --grid-gutters: 10rem;
         --hero-width: 65%;
         --work-grid-gap: 20rem;
@@ -525,13 +525,14 @@ h1 {
     }
 
     .site-header {
-        padding-left: 30rem;
-        padding-right: 30rem;
+        padding-left: 35rem;
+        padding-right: 35rem;
         border-bottom: none;
         position: absolute;
     }
+
     .container {
-        margin-top:30rem;
+        margin-top: 30rem;
     }
 
     .site-footer {
@@ -560,5 +561,70 @@ h1 {
 
     .project-media {
         grid-column: 2;
+    }
+}
+
+#hoverPreview {
+    display: none;
+}
+
+@media (min-width: 834px) {
+    /* 2. FIXED: Changed from class to ID selector */
+    #hoverPreview {
+        display: block;
+        position: fixed;
+        width: 280px;
+        height: 180px;
+        pointer-events: none;
+        opacity: 0;
+        transform: scale(0.7) translate(-50%, -50%);
+        transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+                    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 2000; /* Sits completely on top of the sticky header layer */
+        border-radius: 6px;
+        overflow: hidden;
+        box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+        background-color: var(--media-bg);
+    }
+
+    /* 3. FIXED: Changed from class to ID selector */
+    #hoverPreview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* 4. FIXED: Changed from class to ID selector */
+    #hoverPreview.is-visible {
+        opacity: 1;
+        transform: scale(1) translate(-50%, -50%);
+    }
+
+    /* Elegant Link Underline for Desktop Nav Elements */
+    .desktop-nav a {
+        position: relative;
+        display: inline-block;
+        padding-bottom: 2px;
+    }
+
+    .desktop-nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        
+        /* --- THICKER UNDERLINE UPDATE --- */
+        height: 3px; /* Increased from 1.5px to 3px to give it weight against your bold header font */
+        
+        background-color: var(--text-main);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .desktop-nav a:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
     }
 }
