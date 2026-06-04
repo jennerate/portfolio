@@ -19,9 +19,9 @@
 
     /* Typographic Hierarchy Controls */
     --font-neuebit: 'neuebit', sans-serif;
-    --font-aeonik-regular: "'Aeonik-Regular'", sans-serif;
-    --font-bio: "NeueMontreal", sans-serif;
-    --font-year: "NeueMontreal", sans-serif;
+    --font-aeonik-regular: 'Aeonik-Regular', sans-serif;
+    --font-bio: 'NeueMontreal', sans-serif;
+    --font-year: 'NeueMontreal', sans-serif;
 
     --h1-font-size: 2rem;
     --h1-line-height: 1.75rem;
