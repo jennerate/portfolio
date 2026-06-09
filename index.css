@@ -287,10 +287,10 @@ h1 {
     border-radius: 4px;
 }
 
-.gif img {
+/* .gif img {
     clip-path: inset(5px 5px 5px 5px);
     background-color: var(--media-bg);
-}
+} */
 
 .illo img {
     width: 45%;
