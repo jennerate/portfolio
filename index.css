@@ -9,7 +9,7 @@
     --text-muted: #666666;
     --text-disabled: #8e8e93;
     --media-bg: #f5f5f5;
-    --font-stack: 'NeueMontreal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-stack: 'Sohne', 'NeueMontreal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
     /* Layout */
     --site-padding: 1.5rem;
@@ -17,10 +17,24 @@
     /* Typography */
     --font-neuebit: 'neuebit', sans-serif;
     --font-bio: 'Sohne', sans-serif;
+
     --h2-font-size: 1.5rem;
     --h2-line-height: 1.25rem;
+
+    --button-font-size: 2rem;
+    --button-line-height: 1.875rem;
+
+    --section-font-size: 0.75rem;
+    --section-line-height: 0.938rem;
+
     --description-font-size: 1rem;
     --description-line-height: 1.4rem;
+
+    --margin-description: 0.75rem;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 /* --- FONTS --- */
@@ -67,7 +81,7 @@ a {
 /* --- GLOBAL LAYOUT CONTAINERS --- */
 .site-header {
     padding: var(--site-padding);
-    padding-top: 2rem;
+    margin-top: 1rem;
 }
 
 .container {
@@ -83,47 +97,51 @@ a {
 }
 
 .hero-headline {
-    font-size: 2.5rem;
-    line-height: 1.1;
+    font-size: 3.5rem;
+    line-height: 2.5rem;
     font-family: var(--font-neuebit);
-    font-weight: normal;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
+    margin-top: 8rem;
     max-width: 900px;
 }
 
 .hero-bottom-row {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 6rem;
 }
 
 .bio-paragraphs {
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: .875rem;
+    line-height: 1.125rem;
     color: var(--text-main);
+    width: 90%;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
+    order: 1;
 }
 
 /* --- PREMIUM HOVER PILL BUTTONS --- */
 .pill-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.75rem;
+    order: 2;
 }
 
 .hover-btn {
     display: inline-flex;
+    width: fit-content;
     align-items: center;
     justify-content: center;
-    padding: 0.75rem 1.5rem;
+    padding: 0.65rem 1.25rem;
+    line-height: var(--button-line-height);
     border: 1px solid var(--text-main);
     border-radius: 999px;
     font-family: var(--font-neuebit);
-    font-size: 2.25rem;
+    font-size: var(--button-font-size);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
     background-color: transparent;
     color: var(--text-main);
     cursor: pointer;
@@ -165,31 +183,26 @@ a {
     transform: translateY(-2px) scale(0.98);
 }
 
-.hover-btn.dark-btn {
-    color: var(--bg-color);
+.dark-btn {
+    background-color: black;
     border-color: transparent;
+    padding: 0.65rem 1.25rem;
+    border-radius: 999px;
+    font-size: var(--button-font-size);
+    font-family: var(--font-neuebit);
+    line-height: var(--button-line-height);
 }
 
-.hover-btn.dark-btn::before {
-    transform: scaleY(1);
-}
-
-.hover-btn.dark-btn:hover {
-    color: var(--text-main);
-    border-color: var(--text-main);
-}
-
-.hover-btn.dark-btn:hover::before {
-    transform: scaleY(0);
-    transform-origin: top;
+.dark-btn .btn-text {
+    color: white;
 }
 
 /* --- WORK LAYOUT --- */
 .work-section {
     display: flex;
     flex-direction: column;
-    gap: 6rem;
-    margin-bottom: 8rem;
+    gap: 2rem;
+    margin-bottom: 2rem;
 }
 
 .project-block {
@@ -200,13 +213,22 @@ a {
 
 .section-divider {
     border-top: 1px solid var(--text-main);
+    border-bottom: 1px solid var(--text-main);
     padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: var(--site-padding);
+    padding-right: var(--site-padding);
     margin-left: calc(var(--site-padding) * -1);
     margin-right: calc(var(--site-padding) * -1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .section-number {
-    font-size: 0.85rem;
+    font-size: var(--section-font-size);
+    line-height: var(--section-line-height);
+    font-family: var(--font-stack);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-weight: 500;
@@ -215,33 +237,35 @@ a {
 .project-content {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 3rem;
 }
 
 .project-info h3 {
     font-size: var(--h2-font-size);
     line-height: var(--h2-line-height);
     font-weight: 500;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--margin-description);
+    font-family: var(--font-neuebit);
 }
 
 .project-year {
     display: block;
-    font-size: 0.85rem;
+    font-size: var(--section-font-size);
+    line-height: var(--section-line-height);
     color: var(--text-muted);
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--margin-description);
 }
 
 .project-info p {
-    font-size: var(--description-font-size);
-    line-height: var(--description-line-height);
-    color: var(--text-muted);
+    font-family: var(--font-bio);
+    font-size: var(--section-font-size);
+    line-height: var(--section-line-height);
+    color:  var(--text-main);
     margin-bottom: 1rem;
 }
 
 .project-media-grid {
     display: flex;
-    gap: 1.5rem;
+    gap: 0.25rem;
     overflow-x: auto;
 
     /* Enables smooth snapping behavior */
@@ -253,11 +277,13 @@ a {
     /* Firefox */
     -ms-overflow-style: none;
     /* IE/Edge */
+
+    margin-left: calc(var(--site-padding) * -1);
+    margin-right: calc(var(--site-padding) * -1);
 }
 
 .project-media-grid::-webkit-scrollbar {
     display: none;
-    /* Chrome/Safari */
 }
 
 .media-container {
@@ -266,11 +292,10 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
     aspect-ratio: 4/3;
 
     /* Sizing for the scroller: 85% width lets the user "peek" at the next image */
-    flex: 0 0 85%;
+    flex: 0 0 95%;
     scroll-snap-align: start;
 }
 
@@ -284,15 +309,17 @@ a {
     height: 80%;
 }
 
-/* --- FOOTER --- */
-.site-footer {
-    padding: var(--site-padding);
-    padding-bottom: 3rem;
-    font-size: 0.85rem;
-    color: var(--text-main);
-    text-align: center;
-}
+/* .up {
+    display: none;
+} */
 
+footer {
+    padding: var(--site-padding);
+    border-top: 1px solid var(--text-main);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 /* ==========================================================================
    2. STYLING FOR LAPTOPS (834px and up)
@@ -327,10 +354,6 @@ a {
         gap: 4rem;
         /* CRITICAL FIX: prevents text from vertically overflowing the row */
         align-items: start;
-    }
-
-    .site-footer {
-        text-align: left;
     }
 }
 
