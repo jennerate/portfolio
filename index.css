@@ -360,9 +360,9 @@ footer {
 
 
 /* ==========================================================================
-   3. STYLING FOR X-LARGE DEVICES (1440px and up)
+   3. STYLING FOR X-LARGE DEVICES (1728px and up)
    ========================================================================== */
-@media (min-width: 1441px) {
+@media (min-width: 1728px) {
     :root {
         --site-padding: 5rem;
     }
