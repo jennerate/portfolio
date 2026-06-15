@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://jennygechen.com">
     <meta property="og:title" content="Jenny Gechen">
@@ -25,138 +25,120 @@
 </head>
 
 <body>
+
     <header class="site-header">
-        <div class="header-left">
-            <h1>Jenny Gechen</h1>
-            <h1>Product Designer</h1>
-        </div>
-        <div>
-            <h1 class="header-center">San Francisco, CA</h1>
-        </div>
-
-        <nav class="header-right desktop-nav">
-            <a href="#work">Work</a>
-            <a href="mailto:jenngechen@gmail.com">Email</a>
-            <a href="https://www.linkedin.com/in/jennygechen/" target="_blank">LinkedIn</a>
-        </nav>
-
-        <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-        </button>
+        <a href="#" class="hover-btn dark-btn">
+            <span class="btn-text">JENNY GECHEN</span>
+        </a>
     </header>
 
-    <div class="mobile-menu-overlay" id="mobileMenu">
-        <nav class="mobile-nav-links">
-            <a href="#work" class="active">Work</a>
-            <a href="mailto:jenngechen@gmail.com">Email ↗</a>
-            <a href="https://www.linkedin.com/in/jennygechen/" target="_blank">LinkedIn ↗</a>
-        </nav>
-    </div>
-
     <main class="container">
+        <section class="hero-section" id="about">
+            <h1 class="hero-headline">I'm Jenny, a Product Designer based in San Francisco, formerly at Meta.</h1>
 
-        <section class="hero-section">
-            <h1>Hi, I'm Jenny.</h1>
-            <h1 class="bio centered-feature-box">
-                I’m a Product Designer @ Meta, leading design for high-risk verification systems like gambling
-                and prescription drugs.</h1>
-            <h1 class="bio centered-feature-box">
-                Previously, I've spent time @ Meta shaping business design systems, augmented reality
-                components, and global reporting tools. Ultimately, I like making complex systems feel simple.
-            </h1>
+            <div class="hero-bottom-row">
+                <div class="pill-links">
+                    <a href="https://www.linkedin.com/in/jennygechen/" target="_blank" class="hover-btn">
+                        <span class="btn-text">LinkedIn ↗</span>
+                    </a>
+                    <a href="mailto:jenngechen@gmail.com" class="hover-btn">
+                        <span class="btn-text">Email ↗</span>
+                    </a>
+                    <a href="#work" class="hover-btn">
+                        <span class="btn-text">Prints ↗</span>
+                    </a>
+                    <a href="#" class="hover-btn">
+                        <span class="btn-text">Resume ↗</span>
+                    </a>
+                </div>
+
+                <div class="bio-paragraphs">
+                    <p>My first job was at the community library. I have spent my career organizing information to
+                        create accessible and safe spaces.</p>
+                    <p>I have previously lived in London and Vancouver, which means I have really gotten to know my
+                        umbrella. I run begrudgingly and ski enthusiastically.</p>
+                </div>
+            </div>
         </section>
 
-        <section class="work-grid" id="work">
+        <section class="work-section" id="work">
 
-            <section class="spacer">
-                <article class="project-item">
+            <article class="project-block">
+                <div class="section-divider">
+                    <span class="section-number">1 &mdash; META INTEGRITY</span>
+                </div>
+
+                <div class="project-content">
                     <div class="project-info">
-                        <h3>Building Meta's high-risk verification experience</h3>
-                        <span class="project-year">2024 - 2026</span>
-                        <p>My work at Meta focused on the spaces where digital platforms intersect with real-world harm.
-                            I led the design and launch of a global verification system, built to safely govern
-                            high-risk, heavily-regulated verticals, including gambling, drugs, crypto, addiction
-                            treatment centers, and CBD.</p>
-                        <p>The reality of this space means navigating a high-stakes landscape of shifting regional laws,
-                            sophisticated bad actors, and deep systemic friction. Rather than treating these massive
-                            industries as a monolith, we built a unified framework designed to handle intense regional
-                            complexities and gate unauthorized access. It’s heavy, low-glamour work where the goal isn't
-                            just to move fast, but to build systems that keep people safe.</p>
+                        <h3>Verification of high-risk harms</h3>
+                        <span class="project-year">2024 &mdash; 2026</span>
+                        <p>Launching the next evolution of our gambling, prescription drugs, CBD, crypto, and addiction
+                            treatment centers verification flows.</p>
+                        <p>What does it mean for someone to be an authentic advertiser given spread across geographies,
+                            regulations? How do we prevent bad actors from bypassing our systems? How do we reduce the
+                            friction that applicants have long suffered from?</p>
                     </div>
-                    <div class="project-media">
-                        <img src="assets/Drugs.gif" alt="Verification of high-risk harms UI">
+                    <div class="project-media-grid">
+                        <div class="media-container"><img src="assets/Drugs.gif"
+                                alt="Verification of high-risk harms UI"></div>
+                        <div class="media-container"><img src="assets/VerificationCenter.png"
+                                alt="Consolidated surface for requesting and tracking"></div>
                     </div>
-                </article>
+                </div>
+            </article>
 
-                <article class="project-item">
-                    <div class="project-info"></div>
-                    <div class="project-media">
-                        <img src="assets/VerificationCenter.png" alt="Consolidated surface for requesting and tracking">
-                    </div>
-                </article>
-            </section>
+            <article class="project-block">
+                <div class="section-divider">
+                    <span class="section-number">2 &mdash; DESIGN SYSTEMS</span>
+                </div>
 
-            <section class="spacer">
-                <article class="project-item">
+                <div class="project-content">
                     <div class="project-info">
-                        <h3>Redesigning Meta's tile for global scalability</h3>
-                        <span class="project-year">2024 - 2026</span>
-                        <p>At Meta, I stepped into a classic design system challenge: over time, a massive gap had
-                            formed between our core components and the bespoke, hacked-together tiles teams were
-                            building to survive. This architecture didn’t scale. It isolated product teams, broke
-                            system-wide updates, and failed under conditions like dynamic language translations or
-                            enlarged text layouts for people who have low vision.
-                        </p>
-                        <p>I led a redesign that replaced the rigid container with a modular, block-based framework. By
-                            treating elements like data visualizations, media, and actions as independent modules, teams
-                            could build highly complex layouts while keeping the system stable. The architecture
-                            inherently accounts for variable factors like long translated text and scaled font sizes,
-                            ensuring that global scalability is built into the bones of the component.</p>
+                        <h3>Designing Meta's tile for global scale</h3>
+                        <span class="project-year">2024 &mdash; 2026</span>
+                        <p>Considering features scale: we evolved the existing tile component to fit, form-mass scale,
+                            which was evolving due to trends in more media-biased components.</p>
+                        <p>Considering features scale globally, and ensure that the experience is equally pleasant for
+                            low-vision, platform agnostic users.</p>
                     </div>
-                    <!-- <div class="project-media">
-                        <img src="assets/ImageTile.png" alt="Image biased tile">
-                    </div> -->
-                    <div class="project-media">
-                        <img src="assets/Tile.gif" alt="Mobile mock animation of new tile component">
+                    <div class="project-media-grid">
+                        <div class="media-container"><img src="assets/Tile.gif"
+                                alt="Mobile mock animation of new tile component"></div>
+                        <div class="media-container"><img src="assets/TileComponent.png"
+                                alt="Design systems global tile component"></div>
                     </div>
-                </article>
+                </div>
+            </article>
 
-                <article class="project-item">
-                    <div class="project-info"></div>
-                    <div class="project-media">
-                        <img src="assets/TileComponent.png" alt="Design systems global tile component">
-                    </div>
-                </article>
-            </section>
+            <article class="project-block">
+                <div class="section-divider">
+                    <span class="section-number">3 &mdash; ILLUSTRATIONS</span>
+                </div>
 
-            <section class="spacer">
-                <article class="project-item">
+                <div class="project-content">
                     <div class="project-info">
                         <h3>Illustrations</h3>
                         <span class="project-year">2021</span>
-                        <p>I sell 12x18-inch illustration prints, where all shop profits are donated directly to
-                            charity. If interested, buy via direct message.</p>
+                        <p>I sell 12x18-inch illustration prints. Simply put all profits go towards charities,
+                            basically. If interested, buy via direct message.</p>
                     </div>
-                    <div class="project-media illo">
-                        <img src="assets/Frank.png" alt="Illustration artwork">
+                    <div class="project-media-grid">
+                        <div class="media-container illo-container"><img src="assets/Frank.png"
+                                alt="Illustration artwork"></div>
+                        <div class="media-container illo-container"><img src="assets/Donald.png"
+                                alt="Illustration artwork"></div>
                     </div>
-                </article>
-
-                <article class="project-item">
-                    <div class="project-info"></div>
-                    <div class="project-media illo">
-                        <img src="assets/Donald.png" alt="Illustration">
-                    </div>
-                </article>
-            </section>
+                </div>
+            </article>
 
         </section>
     </main>
 
     <footer class="site-footer">
-        <p class="footer-left">Written, designed & built by Jenny Gechen</p>
+        <p class="footer-left">&copy; 2026 Jenny Gechen</p>
     </footer>
 
     <script src="index.js"></script>
 </body>
+
+</html>
