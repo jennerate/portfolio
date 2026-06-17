@@ -83,9 +83,6 @@ a {
 .site-header {
     padding: var(--site-padding);
     margin-top: 1rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
 }
 
 .container {
@@ -247,7 +244,8 @@ a {
 }
 
 
-.project-info h3, .project-info-illo h3 {
+.project-info h3,
+.project-info-illo h3 {
     font-size: var(--h2-font-size);
     line-height: var(--h2-line-height);
     font-weight: 500;
@@ -263,7 +261,8 @@ a {
     margin-bottom: var(--margin-description);
 }
 
-.project-info p, .project-info-illo p {
+.project-info p,
+.project-info-illo p {
     font-family: var(--font-bio);
     font-size: var(--section-font-size);
     line-height: var(--section-line-height);
@@ -355,7 +354,8 @@ footer {
    ========================================================================== */
 @media (min-width: 768px) {
     :root {
-        /* --site-padding: 1rem; */
+        --section-font-size: 0.875rem;
+        --section-line-height: 1.125rem;
     }
 
     .hero-headline {
@@ -387,15 +387,16 @@ footer {
     }
 
     .project-info p {
-        font-size: 0.875rem;
-        line-height: 1.125rem;
+        font-size: var(--section-font-size);
+        line-height: var(--section-line-height);
     }
 
     .bio-paragraphs,
     .project-description {
         order: 2;
         width: 100%;
-        max-width: none;
+        max-width: 25rem;
+        justify-self: end;
     }
 
     .work-section {
@@ -426,9 +427,8 @@ footer {
         background-image: url('assets/LargeScreenDrugs_transparent.gif');
         background-size: cover;
         background-repeat: no-repeat;
-        /* background-position: center; */
         background-size: min(100%, 1400px) auto;
-        min-height: 47rem;
+        min-height: 50rem;
         background-position: center 70%;
     }
 
@@ -446,7 +446,7 @@ footer {
         position: relative;
         background-image: url(assets/Frank.png);
         background-size: auto;
-        background-size: 55%;
+        background-size: 45%;
         min-height: 50rem;
         background-position: center;
         background-repeat: no-repeat;
@@ -498,45 +498,23 @@ footer {
 
 }
 
-/* ==========================================================================
-   3. STYLING FOR LAPTOPS
-   ========================================================================== */
-
-@media (min-width:1024px) and (max-width: 1440px) {
-
-    #verification,
-    #design-systems {
+@media (min-width:1200px) and (max-width: 1440px) {
+    #verification {
         min-height: 55rem;
-        background-position: center;
-    }
-
-    #design-systems {
-        background-position: center 100%;
-    }
-
-    #illustrations {
-        background-size: 40%;
-    }
-
-
-    .repeat-pattern {
-        background-repeat: repeat;
-    }
-
-    .bio-paragraphs,
-    .project-description {
-        max-width: 25rem;
-        width: 100%;
-        margin-left: auto;
-    }
-
-    .hero-bottom-row,
-    .project-info {
-        grid-template-columns: 1fr 0.75fr;
     }
 }
 
-@media (min-width:1441px) {
+/* ==========================================================================
+   3. STYLING FOR X-LARGE DEVICES (1440px and up)
+   ========================================================================== */
+@media (min-width: 1441px) {
+    :root {
+        --site-padding: 5rem;
+
+        --section-font-size: 1.25rem;
+        --section-line-height: 1.75rem;
+
+    }
 
     .hero-headline {
         font-size: 5.5rem;
@@ -546,7 +524,7 @@ footer {
 
     #verification,
     #design-systems {
-        min-height: 75rem;
+        min-height: 70rem;
         background-position: center;
     }
 
@@ -560,13 +538,16 @@ footer {
 
     .bio-paragraphs,
     .project-description {
-        max-width: 25rem;
+        font-size: var(--section-font-size);
+        line-height: var(--section-line-height);
+        max-width: 30rem;
         width: 100%;
         justify-self: end;
     }
 
     #illustrations {
-        background-size: 25%;
+        background-size: 35%;
+        min-height:70rem;
     }
 
     .hero-bottom-row,
@@ -600,5 +581,57 @@ footer {
    4. PEOPLE SHOULD NOT BE ALLOWED TO OWN DEVICES THIS LARGE
    ========================================================================== */
 
-/* @media (min-width: 2559px) {
-} */
+@media (min-width: 2559px) {
+    :root {
+
+        --h2-font-size: 3.25rem;
+        --h2-line-height: 2rem;
+
+        --button-font-size: 4rem;
+        --button-line-height: 3.775rem;
+
+        --section-font-size: 1.5rem;
+        --section-line-height: 2rem;
+
+        --description-font-size: 1.5rem;
+        --description-line-height: 2rem;
+
+        --margin-description: 0.75rem;
+        --font-bio: 1.75rem;
+    }
+
+    .bio-paragraphs,
+    .project-description {
+        font-size: var(--description-font-size);
+        line-height: var(--description-line-height);
+        width: 100%;
+        max-width: none;
+        color: var(--text-main);
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        order: 1;
+        justify-self: end;
+    }
+
+    .hero-headline {
+        font-size: 7rem;
+        line-height: 5rem;
+        font-family: var(--font-neuebit);
+        margin-bottom: 2rem;
+        margin-top: 8rem;
+        max-width: 1200px;
+    }
+
+    .buy {
+        /* float: right; */
+        display: flex;
+        /* Overrides the inline-flex from .hover-btn */
+        margin-left: auto;
+    }
+
+    .hover-btn {
+        padding: 1.5rem 2.5rem;
+    }
+
+}
