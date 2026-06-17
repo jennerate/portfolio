@@ -65,3 +65,4 @@ if (nextIllustrationBtn && illustrationBlock) {
         illustrationBlock.classList.toggle('repeat-pattern', illoIndex === 1);
     });
 }
+

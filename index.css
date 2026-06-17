@@ -547,7 +547,7 @@ footer {
 
     #illustrations {
         background-size: 35%;
-        min-height:70rem;
+        min-height: 70rem;
     }
 
     .hero-bottom-row,
@@ -574,6 +574,10 @@ footer {
         float: right;
     }
 
+    .carousel-arrow {
+        padding: 2rem;
+        font-size: 3rem;
+    }
 
 }
 
@@ -634,4 +638,23 @@ footer {
         padding: 1.5rem 2.5rem;
     }
 
+    .carousel-arrow {
+        padding: 3rem;
+        font-size: 4rem;
+    }
+
+    #verification,
+    #design-systems {
+        min-height: 80rem;
+        background-position: center;
+    }
+
+    #design-systems {
+        background-position: center;
+    }
+
+    #illustrations {
+        background-size: 35%;
+        min-height: 80rem;
+    }
 }
