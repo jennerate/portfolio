@@ -18,7 +18,7 @@
     --font-neuebit: 'neuebit', sans-serif;
     --font-bio: 'Sohne', sans-serif;
 
-    --h2-font-size: 1.5rem;
+    --h2-font-size: 1.75rem;
     --h2-line-height: 1.25rem;
 
     --button-font-size: 2rem;
@@ -34,8 +34,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
-  transition: width 0.3s ease-in-out;
+    scroll-behavior: smooth;
+    transition: width 0.3s ease-in-out;
 }
 
 /* --- FONTS --- */
@@ -83,12 +83,13 @@ a {
 .site-header {
     padding: var(--site-padding);
     margin-top: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .container {
     padding: 0 var(--site-padding);
-    max-width: 1440px;
-    margin: 0 auto;
 }
 
 /* --- HERO SECTION --- */
@@ -116,7 +117,6 @@ a {
     font-size: .875rem;
     line-height: 1.125rem;
     color: var(--text-main);
-    width: 90%;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
@@ -240,7 +240,14 @@ a {
     grid-template-columns: 1fr;
 }
 
-.project-info h3 {
+.project-info-illo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+
+.project-info h3, .project-info-illo h3 {
     font-size: var(--h2-font-size);
     line-height: var(--h2-line-height);
     font-weight: 500;
@@ -256,11 +263,11 @@ a {
     margin-bottom: var(--margin-description);
 }
 
-.project-info p {
+.project-info p, .project-info-illo p {
     font-family: var(--font-bio);
     font-size: var(--section-font-size);
     line-height: var(--section-line-height);
-    color:  var(--text-main);
+    color: var(--text-main);
     margin-bottom: 1rem;
 }
 
@@ -289,13 +296,10 @@ a {
 
 .media-container {
     background-color: var(--media-bg);
-    border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
     aspect-ratio: 4/3;
-
-    /* Sizing for the scroller: 85% width lets the user "peek" at the next image */
     flex: 0 0 95%;
     scroll-snap-align: start;
 }
@@ -306,11 +310,17 @@ a {
     object-fit: contain;
 }
 
+.large-screens-vid {
+    display: none;
+}
+
 .illo-container img {
     height: 80%;
 }
 
-.link {text-decoration: underline;}
+.link {
+    text-decoration: underline;
+}
 
 footer {
     padding: var(--site-padding);
@@ -320,70 +330,275 @@ footer {
     align-items: center;
 }
 
+.carousel-arrow {
+    display: none;
+}
+
+#verification,
+#design-systems {
+    background-image: none;
+}
+
+.buy {
+    float: left;
+}
+
+@media (max-width: 320px) {
+    .name {
+        display: none;
+    }
+}
+
+
 /* ==========================================================================
-   2. STYLING FOR TABLETS & LAPTOPS 
+   2. STYLING FOR TABLETS
    ========================================================================== */
 @media (min-width: 768px) {
     :root {
-        --site-padding: 3rem;
+        /* --site-padding: 1rem; */
     }
 
     .hero-headline {
-        font-size: 4rem;
-        margin-bottom: 8rem;
+        font-size: 5.5rem;
+        line-height: 4rem;
         width: 75%;
-    }
-
-    .hero-bottom-row {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
     }
 
     .pill-links {
         order: 1;
     }
 
-    .bio-paragraphs {
-        flex: 0 0 45%;
-        max-width: 500px;
+    .hero-section {
+        margin: 15rem 0 15rem 0;
     }
 
-    .project-content {
-        /* Widened text column slightly to reduce wrapping */
-        grid-template-columns: 0.4fr 0.6fr;
+    .section-number {
+        font-size: 0;
+    }
+
+
+    .hero-bottom-row,
+    .project-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 4rem;
-        /* CRITICAL FIX: prevents text from vertically overflowing the row */
-        align-items: start;
-    }
-}
-
-
-/* ==========================================================================
-   3. STYLING FOR X-LARGE DEVICES (1440px and up)
-   ========================================================================== */
-@media (min-width: 1441px) {
-    :root {
-        --site-padding: 5rem;
+        align-items: flex-start;
+        width: 100%;
     }
 
-    .hero-headline {
-        font-size: 5.5rem;
+    .project-info p {
+        font-size: 0.875rem;
+        line-height: 1.125rem;
+    }
+
+    .bio-paragraphs,
+    .project-description {
+        order: 2;
+        width: 100%;
+        max-width: none;
+    }
+
+    .work-section {
+        gap: 0rem;
+    }
+
+    .section-divider {
+        padding: 0;
+        border-top: 1px solid var(--text-main);
+        border-bottom: none;
+        margin-left: calc(var(--site-padding) * -1);
+        margin-right: calc(var(--site-padding) * -1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .project-content {
-        grid-template-columns: 0.35fr 0.65fr;
+        display: block;
     }
 
     .project-media-grid {
-        /* Turn off the flex scroller and switch back to a grid */
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        overflow-x: visible;
+        display: none;
     }
 
-    .media-container {
-        /* Remove the fixed 85% width constraint so it fills the grid column */
-        flex: auto;
+    #verification {
+        position: relative;
+        background-image: url('assets/LargeScreenDrugs_transparent.gif');
+        background-size: cover;
+        background-repeat: no-repeat;
+        /* background-position: center; */
+        background-size: min(100%, 1400px) auto;
+        min-height: 47rem;
+        background-position: center 70%;
+    }
+
+    #design-systems {
+        position: relative;
+        background-image: url('assets/phonev1_transparent.gif');
+        background-size: cover;
+        /* background-size: 150%; */
+        background-repeat: repeat;
+        min-height: 50rem;
+        background-position: center;
+    }
+
+    #illustrations {
+        position: relative;
+        background-image: url(assets/Frank.png);
+        background-size: auto;
+        background-size: 55%;
+        min-height: 50rem;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .occlude {
+        background-color: white;
+        width: fit-content;
+    }
+
+    .carousel-arrow {
+        display: flex;
+        position: absolute;
+        top: 50%;
+        right: 0rem;
+        transform: translateY(-50%);
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 1px solid var(--text-main);
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+        z-index: 10;
+        font-family: var(--font-neuebit);
+        font-size: 2rem;
+        line-height: 1;
+    }
+
+    .carousel-arrow:hover {
+        background-color: var(--text-main);
+        color: var(--bg-color);
+    }
+
+    .second {
+        display: none;
+    }
+
+    .repeat-pattern {
+        background-repeat: repeat;
+    }
+
+    .buy {
+        float: right;
+    }
+
+}
+
+/* ==========================================================================
+   3. STYLING FOR LAPTOPS
+   ========================================================================== */
+
+@media (min-width:1024px) and (max-width: 1440px) {
+
+    #verification,
+    #design-systems {
+        min-height: 55rem;
+        background-position: center;
+    }
+
+    #design-systems {
+        background-position: center 100%;
+    }
+
+    #illustrations {
+        background-size: 40%;
+    }
+
+
+    .repeat-pattern {
+        background-repeat: repeat;
+    }
+
+    .bio-paragraphs,
+    .project-description {
+        max-width: 25rem;
+        width: 100%;
+        margin-left: auto;
+    }
+
+    .hero-bottom-row,
+    .project-info {
+        grid-template-columns: 1fr 0.75fr;
     }
 }
+
+@media (min-width:1441px) {
+
+    .hero-headline {
+        font-size: 5.5rem;
+        line-height: 4rem;
+        margin-bottom: 2rem;
+    }
+
+    #verification,
+    #design-systems {
+        min-height: 75rem;
+        background-position: center;
+    }
+
+    #design-systems {
+        background-position: center 100%;
+    }
+
+    .repeat-pattern {
+        background-repeat: repeat;
+    }
+
+    .bio-paragraphs,
+    .project-description {
+        max-width: 25rem;
+        width: 100%;
+        justify-self: end;
+    }
+
+    #illustrations {
+        background-size: 25%;
+    }
+
+    .hero-bottom-row,
+    .project-info {
+        grid-template-columns: 2fr 1fr;
+    }
+
+
+    /* Styling exclusively for the GIF */
+    #design-systems.is-gif {
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    /* Styling exclusively for the PNG */
+    #design-systems.is-png {
+        background-position: center 100%;
+        background-repeat: repeat;
+        /* background-size: auto; */
+    }
+
+    .buy {
+        float: right;
+    }
+
+
+}
+
+/* ==========================================================================
+   4. PEOPLE SHOULD NOT BE ALLOWED TO OWN DEVICES THIS LARGE
+   ========================================================================== */
+
+/* @media (min-width: 2559px) {
+} */
