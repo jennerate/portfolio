@@ -19,7 +19,7 @@ if (nextVerificationBtn && metaProjectBlock) {
 
 const designSystemAssets = [
     'assets/phonev1_transparent.gif', 
-    'assets/Tilev7.png'  
+    'assets/TileV7.png'  
 ];
 
 let systemIndex = 0;
