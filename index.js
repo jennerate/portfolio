@@ -1,6 +1,6 @@
 // The assets you want to cycle through
 const metaAssets = [
-    'assets/v3_transparent.gif',
+    'assets/DrugsModal.gif',
     'assets/VerificationCenterLargeScreens.png',
 ];
 
@@ -18,8 +18,8 @@ if (nextVerificationBtn && metaProjectBlock) {
 
 
 const designSystemAssets = [
-    'assets/phonev1_transparent.gif', 
-    'assets/TileV7.png'  
+    'assets/TilePhone.gif', 
+    'assets/Tile.png'  
 ];
 
 let systemIndex = 0;
@@ -100,6 +100,7 @@ if (nextIllustrationBtn && illustrationBlock) {
     const mobileQuery = window.matchMedia('(max-width: 767px)');
     const dragListenerOpts = { passive: false };
 
+    // This completely disables pull-to-refresh and system bouncing while dragging
     window.addEventListener('touchmove', (e) => {
         if (dragState) {
             e.preventDefault(); 
@@ -516,15 +517,6 @@ if (nextIllustrationBtn && illustrationBlock) {
         sourceEl.classList.remove('is-dragging-source', 'is-dragging', 'is-press-pending');
         releasePointerCaptureSafe(sourceEl, e.pointerId);
 
-        if (fromMobile) {
-            hideTrash();
-            document.body.classList.remove('is-mobile-dragging');
-        } else {
-            document.body.classList.remove('is-grabbing');
-            isGalleryHovered = gallery.matches(':hover');
-            updateGalleryState();
-        }
-
         if (mode === 'placed') {
             if (droppedOnTrash) {
                 placedEl.remove();
@@ -537,8 +529,20 @@ if (nextIllustrationBtn && illustrationBlock) {
             placeSticker(sticker, pageX, pageY);
         }
 
+        // FIX: Clean up the active drag memory FIRST
         dragState = null;
         cleanupDragListeners();
+
+        // FIX: Now that memory is cleared, update the UI states accurately
+        if (fromMobile) {
+            hideTrash();
+            document.body.classList.remove('is-mobile-dragging');
+        } else {
+            document.body.classList.remove('is-grabbing');
+            // Double check if mouse is still hovering over the gallery on release
+            isGalleryHovered = gallery.matches(':hover');
+            updateGalleryState();
+        }
     }
 
     gallery.addEventListener('pointerenter', () => {
