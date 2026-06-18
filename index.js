@@ -18,8 +18,8 @@ if (nextVerificationBtn && metaProjectBlock) {
 
 
 const designSystemAssets = [
-    'assets/TilePhone.gif', 
-    'assets/Tile.png'  
+    'assets/TilePhone.gif',
+    'assets/Tile.png',
 ];
 
 let systemIndex = 0;
@@ -31,7 +31,7 @@ if (nextDesignSystemsBtn && systemProjectBlock) {
         // Move to the next image
         systemIndex = (systemIndex + 1) % designSystemAssets.length;
         systemProjectBlock.style.backgroundImage = `url('${designSystemAssets[systemIndex]}')`;
-        
+
         // Forcefully apply the correct class and strip the wrong one
         if (systemIndex === 0) {
             // We are on the GIF
@@ -103,7 +103,7 @@ if (nextIllustrationBtn && illustrationBlock) {
     // This completely disables pull-to-refresh and system bouncing while dragging
     window.addEventListener('touchmove', (e) => {
         if (dragState) {
-            e.preventDefault(); 
+            e.preventDefault();
         }
     }, { passive: false });
 
@@ -376,6 +376,23 @@ if (nextIllustrationBtn && illustrationBlock) {
         pressState = null;
     }
 
+    // ADDED: New helper function to instantly convert a press into a drag
+    function commitPressToDrag() {
+        if (!pressState) return;
+
+        const { sticker, sourceEl, isPlaced, pointerId, startX, startY, lastX, lastY } = pressState;
+        const x = lastX ?? startX;
+        const y = lastY ?? startY;
+
+        clearTimeout(pressState.timer);
+        sourceEl.classList.remove('is-press-pending');
+        pressState = null; // Clear state before beginning drag
+        releasePointerCaptureSafe(sourceEl, pointerId);
+
+        if (navigator.vibrate) navigator.vibrate(12);
+        beginMobileDrag(sticker, sourceEl, x, y, { isPlaced });
+    }
+
     function startLongPress(e, sticker, sourceEl, { isPlaced = false } = {}) {
         if (e.pointerType === 'mouse' && e.button !== 0) return;
 
@@ -390,15 +407,8 @@ if (nextIllustrationBtn && illustrationBlock) {
             startX: e.clientX,
             startY: e.clientY,
             timer: setTimeout(() => {
-                const x = pressState.lastX ?? pressState.startX;
-                const y = pressState.lastY ?? pressState.startY;
-                const placed = pressState.isPlaced;
-                const pointerId = pressState.pointerId;
-                sourceEl.classList.remove('is-press-pending');
-                pressState = null;
-                releasePointerCaptureSafe(sourceEl, pointerId);
-                if (navigator.vibrate) navigator.vibrate(12);
-                beginMobileDrag(sticker, sourceEl, x, y, { isPlaced: placed });
+                // CHANGED: Use the helper function when the timer finishes naturally
+                commitPressToDrag();
             }, LONG_PRESS_MS),
         };
 
@@ -413,7 +423,11 @@ if (nextIllustrationBtn && illustrationBlock) {
         pressState.lastY = e.clientY;
         const dx = e.clientX - pressState.startX;
         const dy = e.clientY - pressState.startY;
-        if (Math.hypot(dx, dy) > MOVE_CANCEL_PX) cancelLongPress();
+
+        // CHANGED: Instead of cancelling, instantly trigger the drag if they move!
+        if (Math.hypot(dx, dy) > MOVE_CANCEL_PX) {
+            commitPressToDrag();
+        }
     }
 
     function onPressEnd(e) {
