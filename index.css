@@ -369,7 +369,7 @@ footer {
     }
 
     .hero-section {
-        margin: 15rem 0 15rem 0;
+        margin: 10rem 0 10rem 0;
     }
 
     .section-number {
@@ -428,7 +428,7 @@ footer {
         background-size: cover;
         background-repeat: no-repeat;
         background-size: min(100%, 1400px) auto;
-        min-height: 50rem;
+        min-height: 45rem;
         background-position: center 70%;
     }
 
@@ -511,8 +511,8 @@ footer {
     :root {
         --site-padding: 5rem;
 
-        --section-font-size: 1.25rem;
-        --section-line-height: 1.75rem;
+        --section-font-size: 1rem;
+        --section-line-height: 1.5rem;
 
     }
 
@@ -524,7 +524,7 @@ footer {
 
     #verification,
     #design-systems {
-        min-height: 70rem;
+        min-height: 60rem;
         background-position: center;
     }
 
@@ -547,7 +547,7 @@ footer {
 
     #illustrations {
         background-size: 35%;
-        min-height: 70rem;
+        min-height: 55rem;
     }
 
     .hero-bottom-row,
