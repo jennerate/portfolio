@@ -63,8 +63,13 @@ body.is-grabbing,
 body.is-grabbing *,
 body.is-mobile-dragging,
 body.is-mobile-dragging * {
-    -webkit-user-select: none !important; /* Crucial for iOS Safari */
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
     user-select: none !important;
+    
+    overscroll-behavior: none !important; 
+    touch-action: none !important; 
 }
 
 /* 2. HOVER LINK STATE (Buttons/Links) */
