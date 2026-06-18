@@ -481,7 +481,7 @@ footer {
 
     #design-systems {
         position: relative;
-        background-image: url('assets/phonev1_transparent.gif');
+        background-image: url('assets/TilePhone.gif');
         background-size: cover;
         /* background-size: 150%; */
         background-repeat: repeat;
@@ -491,7 +491,7 @@ footer {
 
     #illustrations {
         position: relative;
-        background-image: url(assets/Frank.png);
+        background-image: url('assets/Frank.png');
         background-size: auto;
         background-size: 45%;
         min-height: 50rem;
