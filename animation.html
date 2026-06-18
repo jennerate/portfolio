@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Sticker Gallery</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: #f5f5f0;
+      font-family: system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+      cursor: default;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body.is-grabbing,
+    body.is-grabbing * {
+      cursor: grabbing !important;
+    }
+
+    .canvas {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+    }
+
+    /* ── Gallery (desktop + mobile trigger) ── */
+    .gallery {
+      position: fixed;
+      top: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+      transform-origin: center top;
+    }
+
+    .gallery.is-expanded {
+      transform: translateX(-50%) scale(1);
+    }
+
+    .gallery.is-minified {
+      transform: translateX(-50%) scale(0.35);
+    }
+
+    .gallery-track {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: gap 0.25s cubic-bezier(0.34, 1.2, 0.64, 1);
+    }
+
+    .gallery.is-minified .gallery-track {
+      gap: 0;
+    }
+
+    .gallery.is-expanded .gallery-track {
+      gap: 24px;
+    }
+
+    .sticker {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      flex-shrink: 0;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      line-height: 1;
+      transition:
+        transform 0.25s cubic-bezier(0.34, 1.2, 0.64, 1),
+        opacity 0.2s;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .gallery.is-minified .sticker:not(:first-child) {
+      margin-left: -56px;
+    }
+
+    .gallery.is-expanded .sticker.is-hovered {
+      transform: scale(1.1);
+      z-index: 2;
+    }
+
+    .gallery.is-expanded .sticker:has(+ .sticker.is-hovered) {
+      transform: translateX(-14px);
+    }
+
+    .gallery.is-expanded .sticker.is-hovered + .sticker {
+      transform: translateX(14px);
+    }
+
+    .sticker.is-dragging-source {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .sticker.is-press-pending {
+      transform: scale(0.95);
+    }
+
+    .sticker:active {
+      cursor: grabbing;
+    }
+
+    /* ── Placed stickers ── */
+    .placed-sticker {
+      position: fixed;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      pointer-events: auto;
+      cursor: grab;
+      z-index: 5;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      line-height: 1;
+      background-size: cover;
+      background-position: center;
+      transform: translate(-50%, -50%);
+      touch-action: none;
+      user-select: none;
+    }
+
+    .placed-sticker.is-dropping {
+      animation: plop 0.45s cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+
+    .placed-sticker.is-dragging {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .placed-sticker.is-press-pending {
+      transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    .placed-sticker-close {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      background: #333;
+      color: #fff;
+      font-size: 14px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s, transform 0.15s, background 0.15s;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .placed-sticker:hover .placed-sticker-close {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .placed-sticker-close:hover {
+      background: #e85d4a;
+      transform: scale(1.08);
+    }
+
+    @keyframes plop {
+      from {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.7;
+      }
+      to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .drop-flyer {
+      position: fixed;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      pointer-events: none;
+      z-index: 180;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      line-height: 1;
+      background-size: cover;
+      background-position: center;
+      transform: translate(-50%, -50%);
+      transition:
+        left 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+        top 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    /* ── Drag ghost ── */
+    .drag-ghost {
+      position: fixed;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      pointer-events: none;
+      z-index: 200;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      line-height: 1;
+      background-size: cover;
+      background-position: center;
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #888;
+      font-size: 14px;
+      pointer-events: none;
+      text-align: center;
+      padding: 0 24px;
+      transition: opacity 0.2s;
+    }
+
+    body.is-mobile-dragging .hint {
+      opacity: 0;
+    }
+
+    /* ── Bottom sheet (mobile) ── */
+    .sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .sheet-backdrop.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .bottom-sheet {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 60;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      padding: 12px 24px calc(28px + env(safe-area-inset-bottom));
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .bottom-sheet.is-open {
+      transform: translateY(0);
+    }
+
+    .sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin: 0 auto 20px;
+    }
+
+    .sheet-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sheet-stickers {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .sheet-stickers .sticker {
+      width: 64px;
+      height: 64px;
+      font-size: 26px;
+      margin-left: 0 !important;
+    }
+
+    /* ── Trash can (mobile drag only) ── */
+    .trash-can {
+      position: fixed;
+      left: 50%;
+      bottom: calc(24px + env(safe-area-inset-bottom));
+      transform: translateX(-50%) translateY(120%);
+      z-index: 150;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #e0e0e0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+      opacity: 0;
+      transition:
+        transform 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+        opacity 0.25s ease,
+        background 0.2s,
+        border-color 0.2s,
+        scale 0.2s;
+    }
+
+    .trash-can.is-visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .trash-can.is-over {
+      background: #ffe8e8;
+      border-color: #e85d4a;
+      scale: 1.12;
+    }
+
+    .trash-can svg {
+      width: 28px;
+      height: 28px;
+      color: #666;
+      transition: color 0.2s;
+    }
+
+    .trash-can.is-over svg {
+      color: #e85d4a;
+    }
+
+    /* ── Mobile overrides ── */
+    @media (max-width: 768px), (pointer: coarse) {
+      .gallery {
+        transform: translateX(-50%) scale(0.45);
+        cursor: pointer;
+      }
+
+      .gallery.is-expanded,
+      .gallery.is-minified {
+        transform: translateX(-50%) scale(0.45);
+      }
+
+      .gallery-track .sticker {
+        pointer-events: none;
+      }
+
+      .hint {
+        bottom: calc(24px + env(safe-area-inset-bottom));
+      }
+
+      .placed-sticker-close {
+        display: none;
+      }
+    }
+
+    @media (min-width: 769px) and (pointer: fine) {
+      .sheet-backdrop,
+      .bottom-sheet,
+      .trash-can {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas" id="canvas">
+    <div class="gallery is-minified" id="gallery">
+      <div class="gallery-track" id="gallery-track"></div>
+    </div>
+    <p class="hint" id="hint">Hover the gallery · drag a sticker to place it</p>
+  </div>
+
+  <div class="sheet-backdrop" id="sheet-backdrop"></div>
+  <div class="bottom-sheet" id="bottom-sheet">
+    <div class="sheet-handle"></div>
+    <p class="sheet-title">Stickers</p>
+    <div class="sheet-stickers" id="sheet-stickers"></div>
+  </div>
+
+  <div class="trash-can" id="trash-can" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="3 6 5 6 21 6"></polyline>
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+      <line x1="10" y1="11" x2="10" y2="17"></line>
+      <line x1="14" y1="11" x2="14" y2="17"></line>
+    </svg>
+  </div>
+
+  <script>
+    const STICKERS = [
+      { id: 's1', color: '#e85d4a', emoji: '🌸' },
+      { id: 's2', color: '#4a90d9', emoji: '⭐' },
+      { id: 's3', color: '#6bcb77', emoji: '🍀' },
+      { id: 's4', color: '#f5a623', emoji: '🔥' },
+      { id: 's5', color: '#bd10e0', emoji: '💜' },
+    ];
+
+    const LONG_PRESS_MS = 380;
+    const MOVE_CANCEL_PX = 10;
+
+    const gallery = document.getElementById('gallery');
+    const galleryTrack = document.getElementById('gallery-track');
+    const canvas = document.getElementById('canvas');
+    const hint = document.getElementById('hint');
+    const sheetBackdrop = document.getElementById('sheet-backdrop');
+    const bottomSheet = document.getElementById('bottom-sheet');
+    const sheetStickers = document.getElementById('sheet-stickers');
+    const trashCan = document.getElementById('trash-can');
+
+    let isMobile = false;
+    let hoveredStickerId = null;
+    let isGalleryHovered = false;
+    let dragState = null;
+    let sheetOpen = false;
+    let pressState = null;
+    let placedIdCounter = 0;
+
+    const mobileQuery = window.matchMedia('(max-width: 768px), (pointer: coarse)');
+
+    function detectMobile() {
+      isMobile = mobileQuery.matches;
+      hint.textContent = isMobile
+        ? 'Tap the gallery · tap a sticker to add · hold placed stickers to move'
+        : 'Hover the gallery · drag stickers to place · hover placed stickers to remove';
+    }
+
+    function applyStickerLook(el, sticker) {
+      if (sticker.image) {
+        el.style.backgroundImage = `url(${sticker.image})`;
+        el.textContent = '';
+      } else {
+        el.style.background = `radial-gradient(circle at 35% 35%, ${lighten(sticker.color, 30)}, ${sticker.color})`;
+        el.textContent = sticker.emoji || '';
+      }
+    }
+
+    function lighten(hex, pct) {
+      const n = parseInt(hex.slice(1), 16);
+      const r = Math.min(255, ((n >> 16) & 0xff) + pct);
+      const g = Math.min(255, ((n >> 8) & 0xff) + pct);
+      const b = Math.min(255, (n & 0xff) + pct);
+      return `rgb(${r},${g},${b})`;
+    }
+
+    function createStickerEl(sticker, { forSheet = false } = {}) {
+      const el = document.createElement('div');
+      el.className = 'sticker';
+      el.dataset.id = sticker.id;
+      applyStickerLook(el, sticker);
+      el.title = sticker.emoji || 'sticker';
+
+      if (!isMobile && !forSheet) {
+        el.addEventListener('pointerenter', () => {
+          hoveredStickerId = sticker.id;
+          updateHoverClasses();
+        });
+        el.addEventListener('pointerleave', () => {
+          if (hoveredStickerId === sticker.id) {
+            hoveredStickerId = null;
+            updateHoverClasses();
+          }
+        });
+        el.addEventListener('pointerdown', (e) => startDesktopDrag(e, sticker, el));
+      }
+
+      if (forSheet) {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          dropStickerFromSheet(sticker, el);
+        });
+      }
+
+      return el;
+    }
+
+    function renderGallery() {
+      galleryTrack.innerHTML = '';
+      STICKERS.forEach((sticker) => {
+        galleryTrack.appendChild(createStickerEl(sticker));
+      });
+      updateGalleryState();
+    }
+
+    function renderSheetStickers() {
+      sheetStickers.innerHTML = '';
+      STICKERS.forEach((sticker) => {
+        sheetStickers.appendChild(createStickerEl(sticker, { forSheet: true }));
+      });
+    }
+
+    function updateHoverClasses() {
+      galleryTrack.querySelectorAll('.sticker').forEach((el) => {
+        el.classList.toggle('is-hovered', el.dataset.id === hoveredStickerId);
+      });
+    }
+
+    function updateGalleryState() {
+      if (isMobile) return;
+      const expanded = isGalleryHovered || dragState !== null;
+      gallery.classList.toggle('is-expanded', expanded);
+      gallery.classList.toggle('is-minified', !expanded);
+    }
+
+    function openSheet() {
+      sheetOpen = true;
+      sheetBackdrop.classList.add('is-open');
+      bottomSheet.classList.add('is-open');
+    }
+
+    function closeSheet() {
+      sheetOpen = false;
+      sheetBackdrop.classList.remove('is-open');
+      bottomSheet.classList.remove('is-open');
+    }
+
+    function showTrash() {
+      trashCan.classList.add('is-visible');
+      trashCan.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideTrash() {
+      trashCan.classList.remove('is-visible', 'is-over');
+      trashCan.setAttribute('aria-hidden', 'true');
+    }
+
+    function isOverTrash(x, y) {
+      const rect = trashCan.getBoundingClientRect();
+      const pad = 24;
+      return (
+        x >= rect.left - pad &&
+        x <= rect.right + pad &&
+        y >= rect.top - pad &&
+        y <= rect.bottom + pad
+      );
+    }
+
+    function updateTrashHighlight(x, y) {
+      trashCan.classList.toggle('is-over', isOverTrash(x, y));
+    }
+
+    function createGhost(sticker, x, y) {
+      const ghost = document.createElement('div');
+      ghost.className = 'drag-ghost';
+      applyStickerLook(ghost, sticker);
+      ghost.style.left = `${x}px`;
+      ghost.style.top = `${y}px`;
+      document.body.appendChild(ghost);
+      return ghost;
+    }
+
+    function placeSticker(sticker, x, y, { animate = true } = {}) {
+      const el = document.createElement('div');
+      el.className = 'placed-sticker' + (animate ? ' is-dropping' : '');
+      el.dataset.placedId = String(++placedIdCounter);
+      applyStickerLook(el, sticker);
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      el.title = sticker.emoji || 'sticker';
+
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'placed-sticker-close';
+      closeBtn.type = 'button';
+      closeBtn.setAttribute('aria-label', 'Remove sticker');
+      closeBtn.textContent = '×';
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        el.remove();
+      });
+      closeBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
+      el.appendChild(closeBtn);
+
+      if (isMobile) {
+        el.addEventListener('pointerdown', (e) => {
+          if (e.target.closest('.placed-sticker-close')) return;
+          startLongPress(e, sticker, el, { isPlaced: true });
+        });
+      } else {
+        el.addEventListener('pointerdown', (e) => {
+          if (e.target.closest('.placed-sticker-close')) return;
+          startPlacedDrag(e, sticker, el);
+        });
+      }
+
+      el.addEventListener('animationend', () => el.classList.remove('is-dropping'), { once: true });
+      canvas.appendChild(el);
+      return el;
+    }
+
+    function dropStickerFromSheet(sticker, sourceEl) {
+      const sourceRect = sourceEl.getBoundingClientRect();
+      const startX = sourceRect.left + sourceRect.width / 2;
+      const startY = sourceRect.top + sourceRect.height / 2;
+      const targetX = window.innerWidth / 2;
+      const targetY = window.innerHeight * 0.45;
+
+      closeSheet();
+
+      const flyer = document.createElement('div');
+      flyer.className = 'drop-flyer';
+      applyStickerLook(flyer, sticker);
+      flyer.style.left = `${startX}px`;
+      flyer.style.top = `${startY}px`;
+      document.body.appendChild(flyer);
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          flyer.style.left = `${targetX}px`;
+          flyer.style.top = `${targetY}px`;
+        });
+      });
+
+      flyer.addEventListener('transitionend', () => {
+        flyer.remove();
+        placeSticker(sticker, targetX, targetY);
+      }, { once: true });
+    }
+
+    function cleanupDragListeners() {
+      window.removeEventListener('pointermove', onDragMove);
+      window.removeEventListener('pointerup', onDragEnd);
+      window.removeEventListener('pointercancel', onDragEnd);
+    }
+
+    function cancelLongPress() {
+      if (!pressState) return;
+      clearTimeout(pressState.timer);
+      pressState.sourceEl.classList.remove('is-press-pending');
+      window.removeEventListener('pointermove', onPressMove);
+      window.removeEventListener('pointerup', onPressEnd);
+      window.removeEventListener('pointercancel', onPressEnd);
+      pressState = null;
+    }
+
+    function startLongPress(e, sticker, sourceEl, { isPlaced = false } = {}) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      e.preventDefault();
+
+      sourceEl.setPointerCapture(e.pointerId);
+      sourceEl.classList.add('is-press-pending');
+
+      pressState = {
+        sticker,
+        sourceEl,
+        isPlaced,
+        pointerId: e.pointerId,
+        startX: e.clientX,
+        startY: e.clientY,
+        timer: setTimeout(() => {
+          const x = pressState.lastX ?? pressState.startX;
+          const y = pressState.lastY ?? pressState.startY;
+          const placed = pressState.isPlaced;
+          sourceEl.classList.remove('is-press-pending');
+          pressState = null;
+          if (navigator.vibrate) navigator.vibrate(12);
+          beginMobileDrag(sticker, sourceEl, x, y, { isPlaced: placed });
+        }, LONG_PRESS_MS),
+      };
+
+      window.addEventListener('pointermove', onPressMove);
+      window.addEventListener('pointerup', onPressEnd);
+      window.addEventListener('pointercancel', onPressEnd);
+    }
+
+    function onPressMove(e) {
+      if (!pressState || e.pointerId !== pressState.pointerId) return;
+      pressState.lastX = e.clientX;
+      pressState.lastY = e.clientY;
+      const dx = e.clientX - pressState.startX;
+      const dy = e.clientY - pressState.startY;
+      if (Math.hypot(dx, dy) > MOVE_CANCEL_PX) cancelLongPress();
+    }
+
+    function onPressEnd(e) {
+      if (!pressState || e.pointerId !== pressState.pointerId) return;
+      cancelLongPress();
+    }
+
+    function beginMobileDrag(sticker, sourceEl, x, y, { isPlaced = false } = {}) {
+      window.removeEventListener('pointermove', onPressMove);
+      window.removeEventListener('pointerup', onPressEnd);
+      window.removeEventListener('pointercancel', onPressEnd);
+
+      if (!isPlaced) closeSheet();
+      sourceEl.classList.add(isPlaced ? 'is-dragging' : 'is-dragging-source');
+      if (isPlaced) sourceEl.style.zIndex = '100';
+      document.body.classList.add('is-mobile-dragging');
+
+      const ghost = createGhost(sticker, x, y);
+      showTrash();
+      updateTrashHighlight(x, y);
+
+      dragState = {
+        sticker,
+        ghost,
+        sourceEl,
+        isMobile: true,
+        mode: isPlaced ? 'placed' : 'gallery',
+        placedEl: isPlaced ? sourceEl : null,
+      };
+
+      window.addEventListener('pointermove', onDragMove);
+      window.addEventListener('pointerup', onDragEnd);
+      window.addEventListener('pointercancel', onDragEnd);
+    }
+
+    function startPlacedDrag(e, sticker, placedEl) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      e.preventDefault();
+      placedEl.setPointerCapture(e.pointerId);
+      placedEl.classList.add('is-dragging');
+      placedEl.style.zIndex = '100';
+      document.body.classList.add('is-grabbing');
+
+      const ghost = createGhost(sticker, e.clientX, e.clientY);
+
+      dragState = {
+        sticker,
+        ghost,
+        sourceEl: placedEl,
+        isMobile: false,
+        mode: 'placed',
+        placedEl,
+      };
+
+      window.addEventListener('pointermove', onDragMove);
+      window.addEventListener('pointerup', onDragEnd);
+      window.addEventListener('pointercancel', onDragEnd);
+    }
+
+    function startDesktopDrag(e, sticker, sourceEl) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      e.preventDefault();
+      sourceEl.setPointerCapture(e.pointerId);
+      sourceEl.classList.add('is-dragging-source');
+      document.body.classList.add('is-grabbing');
+
+      const ghost = createGhost(sticker, e.clientX, e.clientY);
+
+      dragState = {
+        sticker,
+        ghost,
+        sourceEl,
+        isMobile: false,
+        mode: 'gallery',
+      };
+      updateGalleryState();
+
+      window.addEventListener('pointermove', onDragMove);
+      window.addEventListener('pointerup', onDragEnd);
+      window.addEventListener('pointercancel', onDragEnd);
+    }
+
+    function onDragMove(e) {
+      if (!dragState) return;
+      dragState.ghost.style.left = `${e.clientX}px`;
+      dragState.ghost.style.top = `${e.clientY}px`;
+      if (dragState.isMobile) updateTrashHighlight(e.clientX, e.clientY);
+    }
+
+    function onDragEnd(e) {
+      if (!dragState) return;
+
+      const { sticker, ghost, sourceEl, isMobile: fromMobile, mode, placedEl } = dragState;
+      const x = e.clientX;
+      const y = e.clientY;
+      const droppedOnTrash = fromMobile && isOverTrash(x, y);
+
+      ghost.remove();
+      sourceEl.classList.remove('is-dragging-source', 'is-dragging', 'is-press-pending');
+
+      if (fromMobile) {
+        hideTrash();
+        document.body.classList.remove('is-mobile-dragging');
+      } else {
+        document.body.classList.remove('is-grabbing');
+        hoveredStickerId = null;
+        isGalleryHovered = gallery.matches(':hover');
+        updateGalleryState();
+      }
+
+      if (mode === 'placed') {
+        if (droppedOnTrash) {
+          placedEl.remove();
+        } else {
+          placedEl.style.left = `${x}px`;
+          placedEl.style.top = `${y}px`;
+          placedEl.style.zIndex = '';
+        }
+      } else if (!droppedOnTrash) {
+        placeSticker(sticker, x, y);
+      }
+
+      dragState = null;
+      cleanupDragListeners();
+    }
+
+    gallery.addEventListener('pointerenter', () => {
+      if (isMobile) return;
+      isGalleryHovered = true;
+      updateGalleryState();
+    });
+
+    gallery.addEventListener('pointerleave', () => {
+      if (isMobile || dragState) return;
+      isGalleryHovered = false;
+      hoveredStickerId = null;
+      updateHoverClasses();
+      updateGalleryState();
+    });
+
+    gallery.addEventListener('click', () => {
+      if (isMobile) openSheet();
+    });
+
+    sheetBackdrop.addEventListener('click', closeSheet);
+
+    detectMobile();
+    renderGallery();
+    renderSheetStickers();
+
+    mobileQuery.addEventListener('change', () => {
+      detectMobile();
+      closeSheet();
+      hideTrash();
+      cancelLongPress();
+      if (dragState) {
+        dragState.ghost.remove();
+        dragState.sourceEl.classList.remove('is-dragging-source');
+        dragState = null;
+        cleanupDragListeners();
+        document.body.classList.remove('is-grabbing', 'is-mobile-dragging');
+      }
+      renderGallery();
+      renderSheetStickers();
+    });
+  </script>
+</body>
+</html>
