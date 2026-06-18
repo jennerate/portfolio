@@ -100,6 +100,12 @@ if (nextIllustrationBtn && illustrationBlock) {
     const mobileQuery = window.matchMedia('(max-width: 767px)');
     const dragListenerOpts = { passive: false };
 
+    window.addEventListener('touchmove', (e) => {
+        if (dragState) {
+            e.preventDefault(); 
+        }
+    }, { passive: false });
+
     function detectMobile() {
         isMobile = mobileQuery.matches;
     }
