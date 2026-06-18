@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://jennygechen.com">
@@ -26,10 +26,17 @@
 
 <body>
 
+    <div id="sticker-placed-root" class="sticker-placed-root" aria-hidden="true"></div>
+
     <header class="site-header">
         <a href="#" class="dark-btn" id="top">
-            <span class="btn-text">JENNY GECHEN</span>
+            <span class="btn-text">JENNY<span class="header-name-last"> GECHEN</span></span>
         </a>
+        <div id="sticker-overlay" class="sticker-overlay" aria-hidden="false">
+            <div class="gallery is-minified" id="sticker-gallery">
+                <div class="gallery-track" id="sticker-gallery-track"></div>
+            </div>
+        </div>
     </header>
 
     <main class="container">
@@ -186,6 +193,18 @@
             <span class="btn-text">Up ↑</span>
         </a>
     </footer>
+
+    <div class="sheet-backdrop" id="sticker-sheet-backdrop"></div>
+    <div class="bottom-sheet" id="sticker-bottom-sheet">
+        <div class="sheet-handle"></div>
+        <p class="sheet-title">Magnets</p>
+        <p class="sheet-description">The magnets you stick on a fridge tell a story. Here's mine.</p>
+        <div class="sheet-stickers" id="sticker-sheet-stickers"></div>
+    </div>
+
+    <div class="trash-can" id="sticker-trash-can" aria-hidden="true">
+        <img src="assets/trash.svg" alt="" width="28" height="28">
+    </div>
 
     <script src="index.js"></script>
 </body>
